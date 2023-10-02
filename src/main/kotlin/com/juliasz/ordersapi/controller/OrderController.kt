@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("item")
+@RequestMapping("challenge-backend")
 class OrderController(
     val orderService: OrderService
 ) {
 
-    @GetMapping
+    @GetMapping("/item")
     fun getProducts(
         @RequestParam begindate: String,
         @RequestParam finaldate: String

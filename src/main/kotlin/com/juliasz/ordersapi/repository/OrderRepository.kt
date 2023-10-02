@@ -10,22 +10,19 @@ import java.time.format.DateTimeFormatter
 @Repository
 class OrderRepository {
 
-    private final val orderMap = mutableMapOf<String, Product>()
+    private final val orderMap = mutableListOf<Product>()
 
     fun saveProducts(products: Collection<Product>) {
-        val mappedProducts = products.associateBy {
-            it.code
-        }
-        orderMap.putAll(mappedProducts)
+        orderMap.addAll(products)
     }
 
     fun getProducts(begin: String, end: String): List<Product> {
         val (formattedBegin, formattedEnd) = formattedDates(begin, end)
-        val filteredValues = orderMap.filterValues {
+        val filteredValues = orderMap.filter {
             val instant = Instant.parse(it.date)
             val productDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
             productDate >= formattedBegin && productDate <= formattedEnd
-            }.values.toList()
+            }
         return filteredValues
     }
 
