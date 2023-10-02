@@ -21,19 +21,20 @@ class OrderRepository {
         val filteredValues = orderMap.filter {
             val instant = Instant.parse(it.date)
             val productDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
-            productDate >= formattedBegin && productDate <= formattedEnd
-            }
+            formattedBegin <= formattedEnd &&
+                    productDate >= formattedBegin && productDate <= formattedEnd
+        }
         return filteredValues
     }
 
-    fun formattedDates(begin: String, end: String): Pair<LocalDate, LocalDate> {
+    private fun formattedDates(begin: String, end: String): Pair<LocalDate, LocalDate> {
         val formattedBegin = dateFormatter(begin)
         val formattedEnd = dateFormatter(end)
 
         return formattedBegin to formattedEnd
     }
 
-    fun dateFormatter(date: String): LocalDate {
+    private fun dateFormatter(date: String): LocalDate {
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         return LocalDate.parse(date, formatter)
     }
